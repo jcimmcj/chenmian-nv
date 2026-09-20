@@ -1,33 +1,237 @@
-0000000<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>沉眠｜NV剪辑模板资源站</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#111118;color:#f0f0f8;padding:20px 14px}
-header{text-align:center;margin-bottom:30px}
-h1{color:#ffc8dd;font-size:26px;margin-bottom:8px}
-.desc{color:#b8b8d0}
-.card-wrap{max-width:620px;margin:0 auto;display:grid;gap:16px}
-.card{background:#1c1c2b;border-radius:16px;padding:18px}
-.card h2{color:#ffd0e4;font-size:19px;margin-bottom:8px}
-.card p{color:#b9b9d4;font-size:14px;margin-bottom:12px}
-.dl-btn{display:inline-block;padding:10px 18px;background:#ff98bb;color:#111;text-decoration:none;border-radius:10px;font-weight:bold}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二中22班｜人物简介</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", system-ui, sans-serif;
+        }
+
+        body {
+            background: #080812;
+            color: #eef0ff;
+            min-height: 100vh;
+            padding: 60px 20px;
+            background-image: 
+                radial-gradient(circle at 10% 10%, #201840 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, #15102a 0%, transparent 40%);
+        }
+
+        .wrap {
+            max-width: 680px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #c9b8ff, #9d84f0);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .sub {
+            color: #a8a4c8;
+            font-size: 16px;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .avatar{
+            width:160px;
+            height:160px;
+            border-radius:50%;
+            object-fit:cover;
+            border:3px solid #9d84f0;
+            margin:0 auto 20px;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(180,160,255,0.12);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(6px);
+            transition: 0.3s ease;
+        }
+
+        .box:hover {
+            border-color: rgba(180,160,255,0.3);
+            transform: translateY(-4px);
+        }
+
+        .box h2 {
+            color: #d2c8ff;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .box p {
+            color: #b4b0d8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #8c72e8, #7058d8);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        .foot {
+            margin-top: 60px;
+            color: #777499;
+        }
+
+        /* 密码面板 */
+        .auth-panel{
+            display:none;
+            margin-top:30px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid #ff9d9d50;
+            border-radius:20px;
+            padding:24px;
+        }
+        /* 上传面板 */
+        .upload-panel{
+            display:none;
+            margin-top:30px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid #9d84f050;
+            border-radius:20px;
+            padding:24px;
+        }
+        .upload-panel input,.upload-panel textarea,.auth-panel input{
+            width:100%;
+            background:#131322;
+            border:1px solid #9d84f040;
+            border-radius:10px;
+            color:#fff;
+            padding:12px;
+            margin:8px 0;
+        }
+        .upload-panel button,.auth-panel button{
+            padding:10px 24px;
+            background:#8c72e8;
+            border:none;
+            border-radius:10px;
+            color:white;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>沉眠 · NodeVideo模板库</h1>
-    <p class="desc">二次元氛围感剪辑工程模板，快手账号专用</p>
-</header>
-<div class="card-wrap">
-    <div class="card">
-        <h2>氛围感预设模板 #01</h2>
-        <p>二次元慢变色调，直接导入NV，导出zip工程</p>
-        <a href="模板1.zip" class="dl-btn">📥 下载模板</a>
+    <div class="wrap">
+        <h1 class="logo">二中22班</h1>
+        <p class="sub">班级人物简介 · 少年记事簿</p>
+
+        <!-- 卡片容器，新增的卡片会自动加到这里 -->
+        <div id="cardContainer">
+            <!-- 1号 沉眠 -->
+            <div class="box">
+                <img class="avatar" src="avatar1.jpg" alt="沉眠">
+                <h2>人物：沉眠</h2>
+                <p>爱好剪辑、喜欢二次元氛围感短片。擅长调色与字幕排版，安静内敛，热爱记录生活里细碎温柔的画面。</p>
+            </div>
+        </div>
+
+        <!-- 密码验证面板 -->
+        <div class="auth-panel" id="authBox">
+            <h3 style="color:#ffc8c8;margin-bottom:10px">管理员权限验证</h3>
+            <input type="password" id="pwdInput" placeholder="输入管理员密码">
+            <button onclick="checkPassword()">验证解锁</button>
+        </div>
+
+        <!-- 新增人物表单 -->
+        <div class="upload-panel" id="uploadBox">
+            <h3 style="color:#d2c8ff;margin-bottom:10px">新增班级人物卡片</h3>
+            <input type="text" id="nameInput" placeholder="人物姓名">
+            <input type="file" id="avatarInput" accept="image/*">
+            <textarea id="descInput" rows="4" placeholder="填写人物简介..."></textarea>
+            <button onclick="addNewCard()">提交，自动生成卡片</button>
+        </div>
+
+        <div class="foot" id="aboutText">
+            二中22班 · 人物档案 | <span style="cursor:pointer">关于我们</span>
+        </div>
     </div>
-</div>
+
+<script>
+let isAdmin = false;
+//管理员密码，自己修改
+const adminPassword = "123456";
+
+//双击关于我们
+document.getElementById('aboutText').addEventListener('dblclick',()=>{
+    if(isAdmin){
+        const box = document.getElementById('uploadBox');
+        box.style.display = box.style.display === "block" ? "none" : "block";
+    }else{
+        const authBox = document.getElementById('authBox');
+        authBox.style.display = authBox.style.display === "block" ? "none" : "block";
+    }
+})
+
+//密码校验
+function checkPassword(){
+    const inputPwd = document.getElementById("pwdInput").value;
+    if(inputPwd === adminPassword){
+        isAdmin = true;
+        alert("✅权限解锁成功！再次双击关于我们，打开新增人物面板");
+        document.getElementById('authBox').style.display = "none";
+    }else{
+        alert("❌密码错误，没有创建卡片权限");
+    }
+}
+
+//核心：提交表单，动态生成学生卡片
+function addNewCard(){
+    const name = document.getElementById('nameInput').value.trim();
+    const desc = document.getElementById('descInput').value.trim();
+    const file = document.getElementById('avatarInput').files[0];
+    if(!name || !desc){
+        alert("名字和简介不能为空！");
+        return;
+    }
+    //读取图片
+    let imgSrc = "";
+    if(file){
+        imgSrc = URL.createObjectURL(file);
+    }
+    //创建卡片DOM
+    const cardDiv = document.createElement('div');
+    cardDiv.className = "box";
+    cardDiv.innerHTML = `
+        ${imgSrc ? `<img class="avatar" src="${imgSrc}" alt="${name}">` : ""}
+        <h2>人物：${name}</h2>
+        <p>${desc}</p>
+    `;
+    //加到页面卡片列表
+    document.getElementById('cardContainer').appendChild(cardDiv);
+    //清空表单
+    document.getElementById('nameInput').value = "";
+    document.getElementById('descInput').value = "";
+    document.getElementById('avatarInput').value = "";
+    alert("✅学生卡片添加成功！");
+}
+</script>
 </body>
 </html>
