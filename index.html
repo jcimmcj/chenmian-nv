@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贴吧式留言板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-bar{
+            background:#1e1e1e;
+            padding:14px;
+            border-radius:10px;
+            margin-bottom:20px;
+            display:flex;
+            gap:10px;
+        }
+        .search-bar input{
+            flex:1;
+            padding:10px 12px;
+            border-radius:8px;
+            border:none;
+            background:#2a2a2a;
+            color:#fff;
+        }
+        .search-bar button{
+            padding:0 18px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+        .post-box {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .post-box input,
+        .post-box textarea {
+            width: 100%;
+            margin: 8px 0 14px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #2a2a2a;
+            color: #fff;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .post-item {
+            background: #1e1e1e;
+            padding: 18px;
+            border-radius: 12px;
+            position: relative;
+            border:1px solid #2d2d2d;
+        }
+        .post-author {
+            font-weight: 600;
+            color:#60a5fa;
+            margin-bottom:4px;
+        }
+        .post-code{
+            font-size:13px;
+            color:#aaa;
+            margin-bottom:10px;
+        }
+        .post-content{
+            line-height:1.6;
+            margin-bottom:12px;
+        }
+        .post-opt{
+            display:flex;
+            gap:14px;
+        }
+        .btn-like,.btn-cmt{
+            background:#2a2a2a;
+            border:none;
+            color:#fff;
+            padding:6px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:14px;
+        }
+        .post-del {
+            position: absolute;
+            right:16px;
+            top:14px;
+            color:#ef4444;
+            cursor:pointer;
+            font-size:14px;
+            display:none;
+        }
+        .post-item.admin-mode .post-del{
+            display:block;
+        }
+        .comment-wrap{
+            margin-top:14px;
+            padding-top:14px;
+            border-top:1px solid #333;
+            display:none;
+        }
+        .comment-input-row{
+            display:flex;
+            gap:8px;
+            margin-bottom:10px;
+        }
+        .comment-input-row input{
+            flex:1;
+            padding:8px;
+            border-radius:6px;
+            border:none;
+            background:#2a2a2a;
+            color:#fff;
+        }
+        .comment-input-row button{
+            padding:0 12px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+        .comment-list{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+        .comment-item{
+            background:#272727;
+            padding:10px;
+            border-radius:8px;
+        }
+        .cmt-name{
+            font-size:14px;
+            color:#93c5fd;
+            margin-bottom:3px;
+        }
+        .cmt-like{
+            font-size:12px;
+            color:#aaa;
+            cursor:pointer;
+        }
+
+        /* 年龄弹窗 */
+        .age-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .age-box {
+            background: #1a1a1a;
+            padding: 30px 24px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 440px;
+            text-align: center;
+        }
+        .age-box h2 {
+            margin-bottom: 16px;
+        }
+        .notice {
+            line-height: 1.7;
+            color: #ccc;
+            margin-bottom: 22px;
+        }
+        .age-buttons {
+            display: flex;
+            gap:12px;
+        }
+        .btn-yes {
+            flex:1;
+            padding:12px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+        .btn-no {
+            flex:1;
+            padding:12px;
+            background:#dc2626;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+        .footer-tip {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color:#888;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 年龄确认弹窗 -->
+    <div class="age-modal" id="ageModal">
+        <div class="age-box">
+            <h2>访问确认</h2>
+            <div class="notice">
+                【网站公告】<br>
+                贴吧式留言板，请文明发言。发布留言设置搜索码，输入搜索码可检索自己的帖子。<br><br>
+                请问您是否已满18周岁？
+            </div>
+            <div class="age-buttons">
+                <button class="btn-yes" onclick="agreeAge()">是，已满18</button>
+                <button class="btn-no" onclick="refuseAge()">否，未满18</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>留言板</h1>
+        <!-- 搜索框 -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="输入搜索码查找帖子">
+            <button onclick="searchPost()">搜索</button>
+        </div>
+
+        <div class="post-box">
+            <input type="text" id="nickname" placeholder="昵称">
+            <input type="text" id="searchCode" placeholder="设置搜索码（用于找回帖子）">
+            <textarea id="content" rows="4" placeholder="写下你的帖子内容"></textarea>
+            <button class="submit-btn" onclick="submitPost()">发布帖子</button>
+        </div>
+        <div class="post-list" id="postBox"></div>
+    </div>
+
+    <div class="footer-tip" ondblclick="openAdmin()">关于我们</div>
+
+    <script>
+        const ageModal = document.getElementById("ageModal");
+        const postBox = document.getElementById("postBox");
+        let isAdmin = false;
+        let allPosts = [];
+
+        function agreeAge(){
+            ageModal.style.display = "none";
+            loadPosts();
+        }
+        function refuseAge(){
+            document.body.innerHTML = `<div style="width:100vw;height:100vh;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px">禁止访问</div>`;
+        }
+
+        async function loadPosts(){
+            const res = await fetch("/api/list");
+            allPosts = await res.json();
+            render(allPosts);
+        }
+
+        // 搜索：输入搜索码过滤帖子
+        function searchPost(){
+            const code = document.getElementById("searchInput").value.trim();
+            if(!code){
+                render(allPosts);
+                return;
+            }
+            const filter = allPosts.filter(item=>item.searchCode === code);
+            render(filter);
+        }
+
+        function render(list){
+            postBox.innerHTML = "";
+            list.forEach((item, idx)=>{
+                const div = document.createElement("div");
+                div.className = "post-item";
+                if(isAdmin) div.classList.add("admin-mode");
+                div.innerHTML = `
+                    <div class="post-author">${item.nick}</div>
+                    <div class="post-code">搜索码：${item.searchCode}</div>
+                    <div class="post-content">${item.content}</div>
+                    <div class="post-opt">
+                        <button class="btn-like" onclick="likePost(${idx})">👍 ${item.like}</button>
+                        <button class="btn-cmt" onclick="toggleComment(${idx})">评论(${item.comments.length})</button>
+                    </div>
+                    <div class="comment-wrap" id="cmtWrap${idx}">
+                        <div class="comment-input-row">
+                            <input type="text" id="cmtNick${idx}" placeholder="评论昵称">
+                            <input type="text" id="cmtText${idx}" placeholder="输入评论">
+                            <button onclick="submitComment(${idx})">发送</button>
+                        </div>
+                        <div class="comment-list" id="cmtList${idx}"></div>
+                    </div>
+                    <span class="post-del" onclick="deletePost(${idx})">删除</span>
+                `;
+                postBox.appendChild(div);
+
+                //渲染评论
+                const cmtListDom = document.getElementById(`cmtList${idx}`);
+                item.comments.forEach((c,ci)=>{
+                    const cmtDiv = document.createElement("div");
+                    cmtDiv.className = "comment-item";
+                    cmtDiv.innerHTML = `
+                        <div class="cmt-name">${c.nick}</div>
+                        <div>${c.text}</div>
+                        <span class="cmt-like" onclick="likeComment(${idx},${ci})">👍 ${c.like}</span>
+                    `;
+                    cmtListDom.appendChild(cmtDiv);
+                })
+            })
+        }
+
+        function toggleComment(idx){
+            const wrap = document.getElementById(`cmtWrap${idx}`);
+            wrap.style.display = wrap.style.display === "none" ? "block" : "none";
+        }
+
+        //发布帖子
+        async function submitPost(){
+            const nick = document.getElementById("nickname").value.trim();
+            const searchCode = document.getElementById("searchCode").value.trim();
+            const content = document.getElementById("content").value.trim();
+            if(!nick || !searchCode || !content){
+                alert("昵称、搜索码、帖子内容不能为空");
+                return;
+            }
+            const newPost = {
+                nick,
+                searchCode,
+                content,
+                like:0,
+                comments:[]
+            };
+            const res = await fetch("/api/save",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(newPost)
+            });
+            const json = await res.json();
+            if(json.ok){
+                alert("发布成功，请保存你的搜索码");
+                document.getElementById("nickname").value="";
+                document.getElementById("searchCode").value="";
+                document.getElementById("content").value="";
+                loadPosts();
+            }else{
+                alert("发布失败："+json.msg);
+            }
+        }
+
+        //帖子点赞
+        async function likePost(idx){
+            allPosts[idx].like += 1;
+            await fetch("/api/save",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(allPosts)
+            });
+            render(allPosts);
+        }
+
+        //提交评论
+        async function submitComment(idx){
+            const cNick = document.getElementById(`cmtNick${idx}`).value.trim();
+            const cText = document.getElementById(`cmtText${idx}`).value.trim();
+            if(!cNick || !cText){
+                alert("昵称和评论不能为空");
+                return;
+            }
+            allPosts[idx].comments.push({
+                nick:cNick,
+                text:cText,
+                like:0
+            });
+            await fetch("/api/save",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(allPosts)
+            });
+            render(allPosts);
+        }
+
+        //评论点赞
+        async function likeComment(pIdx,cIdx){
+            allPosts[pIdx].comments[cIdx].like +=1;
+            await fetch("/api/save",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(allPosts)
+            });
+            render(allPosts);
+        }
+
+        //管理员删除帖子
+        async function deletePost(idx){
+            if(!isAdmin){
+                alert("需要管理员权限");
+                return;
+            }
+            allPosts.splice(idx,1);
+            await fetch("/api/save",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(allPosts)
+            });
+            render(allPosts);
+        }
+
+        function openAdmin(){
+            const pwd = prompt("输入管理员密码");
+            if(pwd === "123456"){
+                isAdmin = true;
+                alert("管理员模式开启，可以删除帖子");
+                render(allPosts);
+            }
+        }
+    </script>
+</body>
+</html>
